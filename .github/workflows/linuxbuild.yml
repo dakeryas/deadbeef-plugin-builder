@@ -1,7 +1,5 @@
 name: Build for Linux
-
-on: [ push, pull_request ]
-
+on: [ push, pull_request, workflow_dispatch ]
 jobs:
   build:
     name: CI for Linux
@@ -18,6 +16,11 @@ jobs:
         submodules: true
     - name: Build for Linux
       run: TRAVIS_OS_NAME=linux travis/build.sh
+    - name: Save artifcats for Linux
+      uses: actions/upload-artifact@v2
+      with:
+        name: packages_linux
+        path: temp/output/x86_64/*.zip
     - name: Upload for Linux
       env:
           gh_rsa_key: ${{ secrets.GH_ENCRYPTED_RSA_KEY }}

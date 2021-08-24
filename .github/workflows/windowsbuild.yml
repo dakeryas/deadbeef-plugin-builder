@@ -1,5 +1,5 @@
 name: Build for Windows
-on: [ push, pull_request ]
+on: [ push, pull_request, workflow_dispatch ]
 jobs:
   build:
     name: CI for Windows
@@ -23,6 +23,11 @@ jobs:
     - name: Build for Windows
       shell: msys2 {0}
       run: TRAVIS_OS_NAME=windows travis/build.sh
+    - name: Save artifcats for Windows
+      uses: actions/upload-artifact@v2
+      with:
+        name: packages_windows
+        path: temp/output/x86_64/*.zip
     - name: Upload for Windows
       env:
           gh_rsa_key: ${{ secrets.GH_ENCRYPTED_RSA_KEY }}
